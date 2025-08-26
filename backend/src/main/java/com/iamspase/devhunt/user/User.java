@@ -1,5 +1,6 @@
 package com.iamspase.devhunt.user;
 
+import com.iamspase.devhunt.account.Account;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -37,6 +38,10 @@ public class User implements UserDetails {
     @UpdateTimestamp
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    @OneToOne
+    @JoinColumn(name = "account_id", referencedColumnName = "id")
+    private Account account;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
