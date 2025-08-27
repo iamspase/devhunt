@@ -1,5 +1,0 @@
-ALTER TABLE users
-    ADD role SMALLINT;
-
-ALTER TABLE users
-    ALTER COLUMN role SET NOT NULL;
