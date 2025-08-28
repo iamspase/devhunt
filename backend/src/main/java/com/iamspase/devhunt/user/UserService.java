@@ -17,7 +17,7 @@ public class UserService {
         this.accountRepository = accountRepository;
     }
 
-    /* The methods for creating a user are in the AuthService.java, as there's the handling for auth */
+    /* The methods for creating a user are in the AuthenticationService.java, as there's the handling for auth */
 
     public User getUserById(Long id) {
         return userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("User not found"));
@@ -30,11 +30,11 @@ public class UserService {
         Optional<User> user = userRepository.findById(id);
 
         if (user.isPresent()) {
-            Account account = user.get().getAccount();
+            Account account = accountRepository.getById(user.get().getAccountId());
             if(account != null) {
                 accountRepository.delete(account);
             }
-            userRepository.deleteById(id);
+            userRepository.delete(user.get());
         } else {
             throw new EntityNotFoundException("User not found");
         }

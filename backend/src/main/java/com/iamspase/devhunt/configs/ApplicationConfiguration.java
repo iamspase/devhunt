@@ -1,6 +1,7 @@
 package com.iamspase.devhunt.configs;
 
 import com.iamspase.devhunt.user.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,7 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration
 public class ApplicationConfiguration {
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     public ApplicationConfiguration(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -20,7 +21,8 @@ public class ApplicationConfiguration {
 
     @Bean
     UserDetailsService userDetailsService() {
-        return email -> userRepository.findByEmail(email).orElse(null);
+        return username -> userRepository.findByEmail(username)
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
     }
 
     @Bean
@@ -36,6 +38,7 @@ public class ApplicationConfiguration {
     @Bean
     AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+
         authProvider.setUserDetailsService(userDetailsService());
         authProvider.setPasswordEncoder(passwordEncoder());
 

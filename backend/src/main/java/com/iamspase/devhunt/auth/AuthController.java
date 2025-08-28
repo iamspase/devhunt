@@ -9,6 +9,9 @@ import com.iamspase.devhunt.user.UserRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/auth")
 @CrossOrigin
@@ -30,7 +33,13 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<User> signUp(@RequestBody RegisterRequest registerResponseDto) {
+    public ResponseEntity<?> signUp(@RequestBody RegisterRequest registerResponseDto) {
+        if (authenticationService.isEmailTaken(registerResponseDto.getEmail())) {
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "Email already exists");
+
+            return ResponseEntity.badRequest().body(response);
+        }
         User user = authenticationService.register(registerResponseDto);
 
         return ResponseEntity.ok(user);

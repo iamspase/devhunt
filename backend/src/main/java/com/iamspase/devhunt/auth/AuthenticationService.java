@@ -31,13 +31,19 @@ public class AuthenticationService {
         this.accountService = accountService;
     }
 
+    public boolean isEmailTaken(String email) {
+        return userRepository.findByEmail(email).isPresent();
+    }
+
     public User register(RegisterRequest responseData) {
         User user = new User();
         user.setEmail(responseData.getEmail());
         user.setPassword(passwordEncoder.encode(responseData.getPassword()));
 
+        User savedUser = userRepository.save(user); // I need this, because user id is generated after save
+
         Account account = new Account();
-        account.setUser(user);
+        account.setUserId(savedUser.getId());
         account.setEmail(responseData.getEmail());
         account.setFirstName(responseData.getFirstName());
         account.setLastName(responseData.getLastName());
@@ -45,10 +51,10 @@ public class AuthenticationService {
         account.setGender(responseData.getGender());
         account.setIndustry(responseData.getIndustry());
 
-        userRepository.save(user);
-        accountService.createAccount(account, user.getId());
+        accountService.createAccount(account, savedUser.getId());
+        savedUser.setAccountId(account.getId());
 
-        return user;
+        return userRepository.save(savedUser);
     }
 
     public User authenticate(LoginRequest responseData) {

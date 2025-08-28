@@ -36,6 +36,15 @@ public class UserController {
 
     @DeleteMapping("{id}")
     public ResponseEntity<Map<String, String>> deleteUser(@PathVariable Long id) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) authentication.getPrincipal();
+
+        if(!user.getId().equals(id)) {
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "You can only delete your own account");
+            return ResponseEntity.status(403).body(response);
+        }
+
         userService.deleteUser(id);
 
         Map<String, String> response = new HashMap<>();

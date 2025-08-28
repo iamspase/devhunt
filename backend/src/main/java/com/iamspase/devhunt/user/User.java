@@ -1,5 +1,8 @@
 package com.iamspase.devhunt.user;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.iamspase.devhunt.account.Account;
 import jakarta.persistence.*;
 import lombok.*;
@@ -18,6 +21,7 @@ import java.util.List;
 @Getter
 @Setter
 @Data
+@JsonIdentityInfo(generator= ObjectIdGenerators.PropertyGenerator.class, property="id")
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,37 +43,34 @@ public class User implements UserDetails {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @OneToOne
-    @JoinColumn(name = "account_id", referencedColumnName = "id")
-    private Account account;
+    private Long accountId;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of();
     }
-
     @Override
     public String getUsername() {
-        return "";
+        return email;
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return UserDetails.super.isAccountNonExpired();
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return UserDetails.super.isAccountNonLocked();
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return UserDetails.super.isCredentialsNonExpired();
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return UserDetails.super.isEnabled();
+        return true;
     }
 }

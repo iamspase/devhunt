@@ -24,7 +24,7 @@ public class AccountService {
             throw new EntityNotFoundException("User not found");
         }
 
-        account.setUser(user);
+        account.setUserId(user.getId());
         accountRepository.save(account);
     }
 
@@ -35,6 +35,6 @@ public class AccountService {
             throw new EntityNotFoundException("User not found");
         }
 
-        return accountRepository.findAccountByUser(user);
+        return accountRepository.findAccountByUserId(user.getId());
     }
 }

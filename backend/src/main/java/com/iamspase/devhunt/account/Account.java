@@ -1,5 +1,6 @@
 package com.iamspase.devhunt.account;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.iamspase.devhunt.user.User;
 import jakarta.persistence.*;
 import lombok.*;
@@ -43,7 +44,5 @@ public class Account {
     private String about;
     private String education;
 
-    @OneToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user;
+    private Long userId;
 }
