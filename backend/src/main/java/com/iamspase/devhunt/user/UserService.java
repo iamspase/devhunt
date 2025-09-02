@@ -39,4 +39,15 @@ public class UserService {
             throw new EntityNotFoundException("User not found");
         }
     }
+
+    public UserDTO toUserDto(User user) {
+        UserDTO userDTO = new UserDTO();
+        userDTO.setId(user.getId());
+        userDTO.setEmail(user.getEmail());
+        userDTO.setAccountId(user.getAccountId());
+        userDTO.setCreatedAt(user.getCreatedAt());
+        userDTO.setUpdatedAt(user.getUpdatedAt());
+        userDTO.setRole(user.getRole());
+        return userDTO;
+    }
 }

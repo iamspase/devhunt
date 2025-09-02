@@ -33,6 +33,7 @@ public class User implements UserDetails {
     private String password;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private Role role = Role.REGULAR;
 
     @CreationTimestamp
@@ -44,6 +45,7 @@ public class User implements UserDetails {
     private LocalDateTime updatedAt;
 
     private Long accountId;
+    private Long companyId;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

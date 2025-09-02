@@ -1,4 +1,4 @@
-package com.iamspase.devhunt.services;
+package com.iamspase.devhunt.auth;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

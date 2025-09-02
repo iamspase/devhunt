@@ -3,7 +3,6 @@ package com.iamspase.devhunt.user;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -11,6 +10,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/users")
+@CrossOrigin
 public class UserController {
     private UserService userService;
 
@@ -19,19 +19,23 @@ public class UserController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<UserDetails> getCurrentUser() {
+    public ResponseEntity<UserDTO> getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        User user = (User) authentication.getPrincipal();
 
-        System.out.println("Current logged in user: " + userDetails.getUsername());
+        UserDTO userDTO = userService.toUserDto(user);
 
-        return ResponseEntity.ok().body(userDetails);
+        user.setRole(user.getRole());
+
+        return ResponseEntity.ok().body(userDTO);
     }
     @GetMapping("{id}")
-    public ResponseEntity<User> getUserById(@PathVariable  Long id) {
+    public ResponseEntity<UserDTO> getUserById(@PathVariable  Long id) {
         User user = userService.getUserById(id);
 
-        return ResponseEntity.ok().body(user);
+        UserDTO userDTO = userService.toUserDto(user);
+
+        return ResponseEntity.ok().body(userDTO);
     }
 
     @DeleteMapping("{id}")

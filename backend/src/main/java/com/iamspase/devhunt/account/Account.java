@@ -1,7 +1,5 @@
 package com.iamspase.devhunt.account;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.iamspase.devhunt.user.User;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,10 +18,10 @@ public class Account {
     @Column(name = "last_name", nullable = false)
     private String lastName;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String gender;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private int age;
 
     @Column(nullable = false, unique = true)
@@ -32,7 +30,7 @@ public class Account {
     @Column(nullable = false)
     private String industry;
 
-    @Column(nullable = true, name = "photo_url")
+    @Column(nullable = true, name = "photo_url", length = 1000)
     private String photoUrl;
     @Column(nullable = true, name = "banner_img_url")
     private String bannerImgUrl;

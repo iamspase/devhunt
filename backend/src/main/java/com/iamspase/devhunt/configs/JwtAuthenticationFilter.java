@@ -1,6 +1,6 @@
 package com.iamspase.devhunt.configs;
 
-import com.iamspase.devhunt.services.JwtService;
+import com.iamspase.devhunt.auth.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
